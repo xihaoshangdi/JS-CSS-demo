@@ -46,26 +46,52 @@ window.onload = function() {
   function Drawline() {
     let paintting = false;
     let line;
-    canvas.onmousedown = function(e) {
-      paintting = true;
-      line = [e.x, e.y];
-    };
-    canvas.onmousemove = function(e) {
-      if (paintting) {
-        //线条属性
-        ctx.lineWidth = 8;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        //
-        ctx.beginPath();
-        ctx.moveTo(line[0], line[1]);
-        ctx.lineTo(e.x, e.y);
+
+    let check = 'ontouchstart' in document.documentElement;
+
+    if (!check) {
+      canvas.onmousedown = function(e) {
+        paintting = true;
         line = [e.x, e.y];
-        ctx.stroke();
-      }
-    };
-    canvas.onmouseup = function(e) {
-      paintting = false;
-    };
+      };
+      canvas.onmousemove = function(e) {
+        if (paintting) {
+          //线条属性
+          ctx.lineWidth = 8;
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          //
+          ctx.beginPath();
+          ctx.moveTo(line[0], line[1]);
+          ctx.lineTo(e.x, e.y);
+          line = [e.x, e.y];
+          ctx.stroke();
+        }
+      };
+      canvas.onmouseup = function(e) {
+        paintting = false;
+      };
+    } else {
+      canvas.ontouchstart = function(e) {
+        paintting = true;
+        line = [e.touches[0].clientX, e.touches[0].clientY];
+      };
+      canvas.ontouchmove = function(e) {
+        let x = e.touches[0].clientX;
+        let y = e.touches[0].clientY;
+        if (paintting) {
+          //线条属性
+          ctx.lineWidth = 8;
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          //
+          ctx.beginPath();
+          ctx.moveTo(line[0], line[1]);
+          ctx.lineTo(x, y);
+          line = [x, y];
+          ctx.stroke();
+        }
+      };
+    }
   }
 };
