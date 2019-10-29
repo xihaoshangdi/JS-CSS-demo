@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  perspective: 1500px;
+  position: relative;
+}
+#htmlBox {
+  width: 40vw;
+  height: 70vh;
+
+  border-radius: 5px;
+  overflow: auto;
+
+  transition: all 1s;
+
+  word-break: break-all;
+}
+/* 隐藏滚动条 */
+#htmlBox::-webkit-scrollbar {
+  display: none;
+}
+#contentBox {
+  position: absolute;
+  transition: all 1s;
+  top: 20%;
+  left: 50%;
+}
+#white {
+  position: relative;
+  width: 15vw;
+  height: 15vw;
+  border-radius: 50%;
+  top: 0%;
+  left: 25%;
+}
+
+#black {
+  position: relative;
+  width: 15vw;
+  height: 15vw;
+  border-radius: 50%;
+  bottom: 0%;
+  left: 25%;
+}
+
+@keyframes run {
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(36deg);
+  }
+  20% {
+    transform: rotate(72deg);
+  }
+  30% {
+    transform: rotate(108deg);
+  }
+  40% {
+    transform: rotate(144deg);
+  }
+  50% {
+    transform: rotate(180eg);
+  }
+  60% {
+    transform: rotate(216deg);
+  }
+  70% {
+    transform: rotate(252deg);
+  }
+  80% {
+    transform: rotate(288deg);
+  }
+  90% {
+    transform: rotate(324deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/*# sourceMappingURL=/main.af46ece4.css.map */

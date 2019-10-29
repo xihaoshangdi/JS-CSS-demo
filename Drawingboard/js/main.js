@@ -12,7 +12,7 @@ window.onload = function() {
   ctx.fillStyle = 'black';
   ctx.strokeStyle = 'black';
 
-  //Drawbox();
+  // Drawbox();
   Drawline();
   //绘制矩形
   function Drawbox() {
