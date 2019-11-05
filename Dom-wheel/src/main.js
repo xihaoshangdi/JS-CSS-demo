@@ -2,58 +2,119 @@
 let NodeList = [];
 let Node;
 let cur;
-// //dom
-// dom.test();
 
-// //create;
+//dom
+dom.test();
 
-// console.log(dom.create(`<div>creat 函数测试</div>`));
+//create;
+console.log(dom.create(`<div>creat 函数测试</div>`));
 
-// //append
+//append
+Node = dom.create(`<h6>append函数测试</h6>`);
+for (let i = 0; i < 5; i++) {
+  NodeList.push(dom.create(`<h6>append函数测试${i}</h6>`));
+}
+//单
+cur = document.querySelector('#add');
+dom.append(cur, Node);
+//多
+cur = document.querySelector('#add');
+dom.append(cur, NodeList);
 
-// Node = dom.create(`<h6>append函数测试</h6>`);
+//after
+Node = dom.create(`<div id="a3">我是第三个</div>`);
+cur = document.querySelector('#a2');
+dom.after(cur, Node);
 
-// for (let i = 0; i < 5; i++) {
-//   NodeList.push(dom.create(`<h6>append函数测试${i}</h6>`));
-// }
+//before
+cur = document.querySelector('#a2');
+Node = dom.create(`<div id="a1">我是第一个</div>`);
+dom.before(cur, Node);
 
-// //单
+// wrap
+cur = document.querySelector('#pos');
+dom.wrap(cur, `<div id="warp-pos"></div>`);
 
-// cur = document.querySelector('#add');
+//remove
+cur = document.querySelector('#d2');
+dom.remove(cur);
 
-// dom.append(cur, Node);
+//empty
+cur = document.querySelector('#del');
+dom.empty(cur);
 
-// //多
+//attr
+cur = document.querySelector('#r1');
 
-// cur = document.querySelector('#add');
+dom.attr(cur, 'style', 'color:yellow');
+console.log(dom.attr(cur, 'style'));
+dom.attr(cur, { style: 'color:red', name: 'xihaoshangdi', title: 'TestFn' });
 
-// dom.append(cur, NodeList);
+//text
+cur = document.querySelector('#r2');
+console.log(dom.text(cur));
+dom.text(cur, 'r2#');
 
-// //after
+//html
+cur = document.querySelector('#r3');
+console.log(dom.html(cur));
+dom.html(cur, '<h1>r3#</h1>');
 
-// Node = dom.create(`<div id="a3">我是第三个</div>`);
+//style
+cur = document.querySelector('#r4');
+dom.style(cur, 'color', 'red');
+console.log(dom.style(cur, 'color'));
+dom.style(cur, { color: 'green', 'font-size': '30px' });
 
-// cur = document.querySelector('#a2');
+////class
 
-// dom.after(cur, Node);
+//add
+cur = document.querySelector('#r5');
+dom.class.add(cur, 'test');
+//remove
+cur = document.querySelector('#r5');
+dom.class.remove(cur, 'test');
 
-// //before
+//on
+cur = document.querySelector('#r6');
+fn = () => {
+  console.log('被点击了');
+};
+dom.on(cur, 'click', fn);
+//off
+cur = document.querySelector('#r6');
+dom.off(cur, 'click');
 
-// cur = document.querySelector('#a2');
+//find
+cur = dom.find('#qer');
+console.log(cur);
 
-// Node = dom.create(`<div id="a1">我是第一个</div>`);
+//parent
+cur = dom.parent(dom.find('#q1'));
+console.log(cur);
 
-// dom.before(cur, Node);
+//children
+cur = dom.children(dom.find('#qer'));
+console.log(cur);
 
-// // wrap
+//sibiling
+cur = dom.sibliings(dom.find('#q2'));
+console.log(cur);
 
-// cur = document.querySelector('#pos');
+//next
+cur = dom.next(dom.find('#q3'));
+console.log(cur);
 
-// dom.wrap(cur, `<div id="warp-pos"></div>`);
-// //remove
-// cur = document.querySelector('#d2');
-// dom.remove(cur);
+//previous
+cur = dom.previous(dom.find('#q4'));
+console.log(cur);
 
-// //empty
-// cur = document.querySelector('#del');
-// dom.empty(cur);
+//each
+fn = n => {
+  dom.style(n, 'color', 'red');
+};
+cur = dom.each([dom.find('#qer')], fn);
+
+//index
+cur = dom.index(dom.find('#q5'));
+console.log(cur);

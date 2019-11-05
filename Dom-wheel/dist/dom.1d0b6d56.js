@@ -118,6 +118,8 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   return newRequire;
 })({"dom.js":[function(require,module,exports) {
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 window.dom = {
   test: function test() {
     console.log('暴露测试');
@@ -166,6 +168,98 @@ window.dom = {
       array.push(dom.remove(node.firstChild));
       cur = node.firstChild;
     }
+  },
+  attr: function attr(node, object, value) {
+    if (arguments.length === 3) {
+      node.setAttribute(object, value);
+    } else if (arguments.length === 2) {
+      if (typeof object === 'string') {
+        return node.getAttribute(object);
+      } else if (_typeof(object) === 'object') {
+        for (key in object) {
+          node.setAttribute(key, object[key]);
+        }
+      }
+    }
+  },
+  text: function text(node, value) {
+    if (arguments.length === 1) {
+      if ('innerText' in node) {
+        return node.innerText;
+      } else {
+        return node.textContent;
+      }
+    } else if (arguments.length === 2) {
+      if ('innerText' in node) {
+        node.innerText = value;
+      } else {
+        node.textContent = value;
+      }
+    }
+  },
+  html: function html(node, htmlStr) {
+    if (arguments.length === 1) {
+      return node.innerHTML;
+    } else if (arguments.length === 2) {
+      node.innerHTML = htmlStr;
+    }
+  },
+  style: function style(node, name, value) {
+    if (arguments.length === 3) {
+      //node, 'color', 'red'
+      node.style[name] = value;
+    } else if (arguments.length === 2) {
+      if (typeof name === 'string') {
+        return node.style[name];
+      } else if (_typeof(name) === 'object') {
+        for (key in name) {
+          node.style[key] = name[key];
+        }
+      }
+    }
+  },
+  class: {
+    add: function add(node, className) {
+      node.classList.add(className);
+    },
+    remove: function remove(node, className) {
+      node.classList.remove(className);
+    }
+  },
+  on: function on(node, event, fn) {
+    node.addEventListener(event, fn);
+  },
+  off: function off(node, event) {
+    node.removeEventListener(event, fn);
+  },
+  find: function find(query) {
+    return document.querySelector(query);
+  },
+  parent: function parent(node) {
+    return node.parentNode;
+  },
+  children: function children(node) {
+    return Array.from(node.children);
+  },
+  sibliings: function sibliings(node) {
+    var childList = dom.children(node.parentNode);
+    childList.splice(childList.indexOf(node), 1);
+    return childList;
+  },
+  next: function next(node) {
+    return node.nextElementSibling;
+  },
+  previous: function previous(node) {
+    return node.previousElementSibling;
+  },
+  each: function each(nodeList, fn) {
+    for (var i = 0; i < nodeList.length; i++) {
+      fn.call(null, nodeList[i], fn);
+    }
+  },
+  index: function index(node) {
+    var childList = dom.children(node.parentNode);
+    return childList.indexOf(node);
   }
 };
 },{}],"../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -196,7 +290,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "1675" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "6569" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

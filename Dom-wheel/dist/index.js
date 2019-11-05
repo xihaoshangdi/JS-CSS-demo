@@ -117,116 +117,74 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"main.js":[function(require,module,exports) {
-// console.log('测试');
-var NodeList = [];
-var Node;
-var cur; //dom
+})({"../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
 
-dom.test(); //create;
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
 
-console.log(dom.create("<div>creat \u51FD\u6570\u6D4B\u8BD5</div>")); //append
+  return bundleURL;
+}
 
-Node = dom.create("<h6>append\u51FD\u6570\u6D4B\u8BD5</h6>");
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
 
-for (var i = 0; i < 5; i++) {
-  NodeList.push(dom.create("<h6>append\u51FD\u6570\u6D4B\u8BD5".concat(i, "</h6>")));
-} //单
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
 
+  return '/';
+}
 
-cur = document.querySelector('#add');
-dom.append(cur, Node); //多
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
 
-cur = document.querySelector('#add');
-dom.append(cur, NodeList); //after
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
 
-Node = dom.create("<div id=\"a3\">\u6211\u662F\u7B2C\u4E09\u4E2A</div>");
-cur = document.querySelector('#a2');
-dom.after(cur, Node); //before
+function updateLink(link) {
+  var newLink = link.cloneNode();
 
-cur = document.querySelector('#a2');
-Node = dom.create("<div id=\"a1\">\u6211\u662F\u7B2C\u4E00\u4E2A</div>");
-dom.before(cur, Node); // wrap
+  newLink.onload = function () {
+    link.remove();
+  };
 
-cur = document.querySelector('#pos');
-dom.wrap(cur, "<div id=\"warp-pos\"></div>"); //remove
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
 
-cur = document.querySelector('#d2');
-dom.remove(cur); //empty
+var cssTimeout = null;
 
-cur = document.querySelector('#del');
-dom.empty(cur); //attr
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
 
-cur = document.querySelector('#r1');
-dom.attr(cur, 'style', 'color:yellow');
-console.log(dom.attr(cur, 'style'));
-dom.attr(cur, {
-  style: 'color:red',
-  name: 'xihaoshangdi',
-  title: 'TestFn'
-}); //text
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
 
-cur = document.querySelector('#r2');
-console.log(dom.text(cur));
-dom.text(cur, 'r2#'); //html
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
 
-cur = document.querySelector('#r3');
-console.log(dom.html(cur));
-dom.html(cur, '<h1>r3#</h1>'); //style
+    cssTimeout = null;
+  }, 50);
+}
 
-cur = document.querySelector('#r4');
-dom.style(cur, 'color', 'red');
-console.log(dom.style(cur, 'color'));
-dom.style(cur, {
-  color: 'green',
-  'font-size': '30px'
-}); ////class
-//add
-
-cur = document.querySelector('#r5');
-dom.class.add(cur, 'test'); //remove
-
-cur = document.querySelector('#r5');
-dom.class.remove(cur, 'test'); //on
-
-cur = document.querySelector('#r6');
-
-fn = function fn() {
-  console.log('被点击了');
-};
-
-dom.on(cur, 'click', fn); //off
-
-cur = document.querySelector('#r6');
-dom.off(cur, 'click'); //find
-
-cur = dom.find('#qer');
-console.log(cur); //parent
-
-cur = dom.parent(dom.find('#q1'));
-console.log(cur); //children
-
-cur = dom.children(dom.find('#qer'));
-console.log(cur); //sibiling
-
-cur = dom.sibliings(dom.find('#q2'));
-console.log(cur); //next
-
-cur = dom.next(dom.find('#q3'));
-console.log(cur); //previous
-
-cur = dom.previous(dom.find('#q4'));
-console.log(cur); //each
-
-fn = function fn(n) {
-  dom.style(n, 'color', 'red');
-};
-
-cur = dom.each([dom.find('#qer')], fn); //index
-
-cur = dom.index(dom.find('#q5'));
-console.log(cur);
-},{}],"../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+module.exports = reloadCSS;
+},{"./bundle-url":"../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -430,5 +388,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","main.js"], null)
-//# sourceMappingURL=/main.1f19ae8e.js.map
+},{}]},{},["../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
+//# sourceMappingURL=/index.js.map
