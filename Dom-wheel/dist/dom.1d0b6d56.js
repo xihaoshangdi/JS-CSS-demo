@@ -254,7 +254,7 @@ window.dom = {
   },
   each: function each(nodeList, fn) {
     for (var i = 0; i < nodeList.length; i++) {
-      fn.call(null, nodeList[i], fn);
+      fn.call(null, nodeList[i]);
     }
   },
   index: function index(node) {
@@ -290,7 +290,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "6569" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "11429" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
