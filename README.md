@@ -15,4 +15,4 @@ https://github.com/xihaoshangdi/JavaScript-demo/blob/master/Dom-wheel/src/dom.js
 https://github.com/xihaoshangdi/JavaScript-demo/blob/master/jQuery-wheel/src/jQuery.js
 
 ### 更新了Ajax-demo
-https://github.com/xihaoshangdi/JavaScript-demo/blob/master/Ajax-demo/public/index.html
+https://xihaoshangdi.github.io/JavaScript-demo/blob/master/Ajax-demo/public/index.html
