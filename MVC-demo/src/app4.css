@@ -1,0 +1,27 @@
+#app4 {
+}
+#app4 #circle {
+  border: 1px solid red;
+  width: 15vw;
+  height: 15vw;
+
+  border-radius: 50%;
+}
+#app4 #circle.active {
+  animation: 4s linear 0s infinite alternate gradients;
+}
+
+@keyframes gradients {
+  0% {
+    background: #b590ca;
+  }
+  33% {
+    background: #a8d3da;
+  }
+  66% {
+    background: #f5cab3;
+  }
+  100% {
+    background: #f3ecb8;
+  }
+}

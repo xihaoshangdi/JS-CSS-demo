@@ -1,0 +1,24 @@
+#app2 {
+}
+#app2 > .tab-Bar {
+  border: 1px solid green;
+  display: flex;
+}
+
+#app2 > .tab-Bar > li {
+  border: 1px solid red;
+  width: 50%;
+}
+#app2 > .tab-Bar > li.selector {
+  background-color: slategrey;
+}
+
+#app2 > .tab-Content {
+}
+
+#app2 > .tab-Content > li {
+  display: none;
+}
+#app2 > .tab-Content > li.active {
+  display: block;
+}

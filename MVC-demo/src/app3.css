@@ -1,0 +1,14 @@
+#app3 {
+}
+#app3 > #square {
+  margin-top: 5vw;
+  margin-left: 5vw;
+  width: 15vw;
+  height: 15vw;
+  border: 1px solid red;
+  transition: transform 2s;
+}
+#app3 > #square.active {
+  transform: translateX(15vw) rotate(45deg) translateY(15vw);
+  background-color: red;
+}
