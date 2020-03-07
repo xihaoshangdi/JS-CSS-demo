@@ -11021,6 +11021,9 @@ var _jquery = _interopRequireDefault(require("jquery"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //js引入js
+var html = "<section id=\"app1\">\n<div id=\"outputAreas\">\n  <span id=\"result\">100</span>\n</div>\n<div id=\"operateArea\">\n  <button id=\"add\">+1</button>\n  <button id=\"sub\">-1</button>\n  <button id=\"mul\">\xD72</button>\n  <button id=\"divide\">\xF72</button>\n</div>\n</section>";
+var $element = (0, _jquery.default)(html);
+$element.appendTo((0, _jquery.default)('body > .container'));
 var $result = (0, _jquery.default)('#result');
 var $add = (0, _jquery.default)('#add');
 var $sub = (0, _jquery.default)('#sub');
@@ -11063,6 +11066,9 @@ var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var html = " <section id=\"app2\">\n<ol class=\"tab-Bar\">\n  <li>1</li>\n  <li>2</li>\n</ol>\n<ol class=\"tab-Content\">\n  <li>first</li>\n  <li>second</li>\n</ol>\n</section>";
+var $element = (0, _jquery.default)(html);
+$element.appendTo((0, _jquery.default)('body > .container'));
 var $tabBar = (0, _jquery.default)('#app2 .tab-Bar');
 var $tabContent = (0, _jquery.default)('#app2 .tab-Content');
 var localStoKey = 'tab';
@@ -11088,6 +11094,9 @@ var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var html = " <section id=\"app3\">\n<div id=\"square\"></div>\n</section>";
+var $element = (0, _jquery.default)(html);
+$element.appendTo((0, _jquery.default)('body > .container'));
 var $square = (0, _jquery.default)('#app3 #square');
 var localStoKey = 'status';
 var status = localStorage.getItem(localStoKey) === 'yes';
@@ -11121,6 +11130,9 @@ var _jquery = _interopRequireDefault(require("jquery"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var html = " <section id=\"app4\">\n<div id=\"circle\"></div>\n</section>";
+var $element = (0, _jquery.default)(html);
+$element.appendTo((0, _jquery.default)('body > .container'));
 var $circle = (0, _jquery.default)('#app4 #circle');
 $circle.on('mouseenter', function () {
   $circle.addClass('active');
@@ -11169,7 +11181,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "8090" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "8948" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
