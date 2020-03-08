@@ -11014,6 +11014,11 @@ return jQuery;
 },{"process":"../../../../AppData/Local/Yarn/Data/global/node_modules/process/browser.js"}],"app1.js":[function(require,module,exports) {
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
 require("./app1.css");
 
 var _jquery = _interopRequireDefault(require("jquery"));
@@ -11021,37 +11026,58 @@ var _jquery = _interopRequireDefault(require("jquery"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //js引入js
-var html = "<section id=\"app1\">\n<div id=\"outputAreas\">\n  <span id=\"result\">100</span>\n</div>\n<div id=\"operateArea\">\n  <button id=\"add\">+1</button>\n  <button id=\"sub\">-1</button>\n  <button id=\"mul\">\xD72</button>\n  <button id=\"divide\">\xF72</button>\n</div>\n</section>";
-var $element = (0, _jquery.default)(html);
-$element.appendTo((0, _jquery.default)('body > .container'));
-var $result = (0, _jquery.default)('#result');
-var $add = (0, _jquery.default)('#add');
-var $sub = (0, _jquery.default)('#sub');
-var $mul = (0, _jquery.default)('#mul');
-var $divide = (0, _jquery.default)('#divide');
-var result = localStorage.getItem('result') || 100;
-$result.text(result);
-var number = parseInt(result);
-$add.on('click', function () {
-  number += 1;
-  $result.text(number);
-  localStorage.setItem('result', number);
-});
-$sub.on('click', function () {
-  number -= 1;
-  $result.text(number);
-  localStorage.setItem('result', number);
-});
-$mul.on('click', function () {
-  number = number * 2;
-  $result.text(number);
-  localStorage.setItem('result', number);
-});
-$divide.on('click', function () {
-  number = number / 2;
-  $result.text(number);
-  localStorage.setItem('result', number);
-});
+//model 数据
+var model = {
+  data: {
+    result: parseInt(localStorage.getItem('result'))
+  }
+}; //view 视图
+
+var view = {
+  el: null,
+  html: "\n  <div>\n    <div id=\"outputAreas\">\n      <span id=\"result\">{{result}}</span>\n    </div>\n    <div id=\"operateArea\">\n      <button id=\"add\">+1</button>\n      <button id=\"sub\">-1</button>\n      <button id=\"mul\">\xD72</button>\n      <button id=\"divide\">\xF72</button>\n    </div>\n  </div>\n",
+  init: function init(container) {
+    view.container = (0, _jquery.default)(container);
+    view.render();
+  },
+  render: function render() {
+    if (view.el === null) {
+      //初次渲染
+      view.el = (0, _jquery.default)(view.html.replace('{{result}}', model.data.result)).appendTo((0, _jquery.default)(view.container));
+    } else {
+      var newElement = (0, _jquery.default)(view.html.replace('{{result}}', model.data.result));
+      view.el.replaceWith(newElement);
+      view.el = newElement;
+    }
+  }
+}; //control 控制
+
+var control = {
+  init: function init(container) {
+    view.init(container);
+    control.bindEvents();
+  },
+  bindEvents: function bindEvents() {
+    view.container.on('click', '#add', function () {
+      model.data.result += 1;
+      view.render();
+    });
+    view.container.on('click', '#sub', function () {
+      model.data.result -= 1;
+      view.render();
+    });
+    view.container.on('click', '#mul', function () {
+      model.data.result *= 2;
+      view.render();
+    });
+    view.container.on('click', '#divide', function () {
+      model.data.result /= 2;
+      view.render();
+    });
+  }
+};
+var _default = control;
+exports.default = _default;
 },{"./app1.css":"app1.css","jquery":"../node_modules/jquery/dist/jquery.js"}],"app2.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
@@ -11146,13 +11172,18 @@ require("./reset.css");
 
 require("./global.css");
 
-require("./app1.js");
+var _app = _interopRequireDefault(require("./app1.js"));
 
 require("./app2.js");
 
 require("./app3.js");
 
 require("./app4.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//初始化 渲染HTML
+_app.default.init('#app1');
 },{"./reset.css":"reset.css","./global.css":"global.css","./app1.js":"app1.js","./app2.js":"app2.js","./app3.js":"app3.js","./app4.js":"app4.js"}],"../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -11181,7 +11212,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "8948" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "13050" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
