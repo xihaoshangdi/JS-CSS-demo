@@ -16,3 +16,6 @@ https://github.com/xihaoshangdi/JavaScript-demo/blob/master/jQuery-wheel/src/jQu
 
 ### 更新了Ajax-demo
 https://github.com/xihaoshangdi/JavaScript-demo/tree/master/Ajax-demo
+
+### MVC 设计模式
+https://xihaoshangdi.github.io/JavaScript-demo/MVC-demo/dist/index.html
