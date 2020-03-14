@@ -11011,7 +11011,63 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
-},{"process":"../../../../AppData/Local/Yarn/Data/global/node_modules/process/browser.js"}],"app1.js":[function(require,module,exports) {
+},{"process":"../../../../AppData/Local/Yarn/Data/global/node_modules/process/browser.js"}],"base/Model.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Model =
+/*#__PURE__*/
+function () {
+  function Model(options) {
+    var _this = this;
+
+    _classCallCheck(this, Model);
+
+    ['data', 'add', 'del', 'update', 'get'].forEach(function (key) {
+      if (key in options) {
+        _this[key] = options[key];
+      }
+    });
+  }
+
+  _createClass(Model, [{
+    key: "add",
+    value: function add() {
+      console && console.error && console.error('未实现add方法');
+    }
+  }, {
+    key: "del",
+    value: function del() {
+      console && console.error && console.error('未实现add方法');
+    }
+  }, {
+    key: "update",
+    value: function update() {
+      console && console.error && console.error('未实现add方法');
+    }
+  }, {
+    key: "get",
+    value: function get() {
+      console && console.error && console.error('未实现add方法');
+    }
+  }]);
+
+  return Model;
+}();
+
+var _default = Model;
+exports.default = _default;
+},{}],"app1.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -11023,62 +11079,87 @@ require("./app1.css");
 
 var _jquery = _interopRequireDefault(require("jquery"));
 
+var _Model = _interopRequireDefault(require("./base/Model"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //js引入js
-//model 数据
-var model = {
+//通信对象
+var eventBus = (0, _jquery.default)(window); //model 数据
+
+var model = new _Model.default({
   data: {
     result: parseInt(localStorage.getItem('result'))
+  },
+  update: function update(number) {
+    Object.assign(model.data, number);
+    eventBus.trigger('m:updated');
+    localStorage.setItem('result', model.data.result);
   }
-}; //view 视图
+}); //view 视图
 
 var view = {
   el: null,
   html: "\n  <div>\n    <div id=\"outputAreas\">\n      <span id=\"result\">{{result}}</span>\n    </div>\n    <div id=\"operateArea\">\n      <button id=\"add\">+1</button>\n      <button id=\"sub\">-1</button>\n      <button id=\"mul\">\xD72</button>\n      <button id=\"divide\">\xF72</button>\n    </div>\n  </div>\n",
   init: function init(container) {
-    view.container = (0, _jquery.default)(container);
-    view.render();
+    view.el = (0, _jquery.default)(container);
   },
-  render: function render() {
-    if (view.el === null) {
-      //初次渲染
-      view.el = (0, _jquery.default)(view.html.replace('{{result}}', model.data.result)).appendTo((0, _jquery.default)(view.container));
-    } else {
-      var newElement = (0, _jquery.default)(view.html.replace('{{result}}', model.data.result));
-      view.el.replaceWith(newElement);
-      view.el = newElement;
+  render: function render(number) {
+    if (view.el.children.length !== 0) {
+      view.el.empty();
     }
+
+    (0, _jquery.default)(view.html.replace('{{result}}', number)).appendTo((0, _jquery.default)(view.el));
   }
 }; //control 控制
 
 var control = {
   init: function init(container) {
     view.init(container);
-    control.bindEvents();
+    view.render(model.data.result);
+    control.autoBindEvents();
+    eventBus.on('m:updated', function () {
+      view.render(model.data.result);
+    });
   },
-  bindEvents: function bindEvents() {
-    view.container.on('click', '#add', function () {
-      model.data.result += 1;
-      view.render();
+  events: {
+    'click.#add': 'add',
+    'click.#sub': 'sub',
+    'click.#mul': 'mul',
+    'click.#divide': 'divide'
+  },
+  add: function add() {
+    model.update({
+      result: model.data.result + 1
     });
-    view.container.on('click', '#sub', function () {
-      model.data.result -= 1;
-      view.render();
+  },
+  sub: function sub() {
+    model.update({
+      result: model.data.result - 1
     });
-    view.container.on('click', '#mul', function () {
-      model.data.result *= 2;
-      view.render();
+  },
+  mul: function mul() {
+    model.update({
+      result: model.data.result * 2
     });
-    view.container.on('click', '#divide', function () {
-      model.data.result /= 2;
-      view.render();
+  },
+  divide: function divide() {
+    model.update({
+      result: model.data.result / 2
     });
+  },
+  autoBindEvents: function autoBindEvents() {
+    var key, list;
+
+    for (key in control.events) {
+      list = key.split('.');
+      view.el.on(list[0], list[1], control[control.events[key]]);
+    }
   }
 };
 var _default = control;
 exports.default = _default;
-},{"./app1.css":"app1.css","jquery":"../node_modules/jquery/dist/jquery.js"}],"app2.css":[function(require,module,exports) {
+},{"./app1.css":"app1.css","jquery":"../node_modules/jquery/dist/jquery.js","./base/Model":"base/Model.js"}],"app2.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -11086,27 +11167,88 @@ module.hot.accept(reloadCSS);
 },{"_css_loader":"../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"app2.js":[function(require,module,exports) {
 "use strict";
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
 require("./app2.css");
 
 var _jquery = _interopRequireDefault(require("jquery"));
 
+var _Model = _interopRequireDefault(require("./base/Model"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var html = " <section id=\"app2\">\n<ol class=\"tab-Bar\">\n  <li>1</li>\n  <li>2</li>\n</ol>\n<ol class=\"tab-Content\">\n  <li>first</li>\n  <li>second</li>\n</ol>\n</section>";
-var $element = (0, _jquery.default)(html);
-$element.appendTo((0, _jquery.default)('body > .container'));
-var $tabBar = (0, _jquery.default)('#app2 .tab-Bar');
-var $tabContent = (0, _jquery.default)('#app2 .tab-Content');
-var localStoKey = 'tab';
-var index = localStorage.getItem(localStoKey) || 0;
-$tabBar.on('click', 'li', function (e) {
-  var $li = (0, _jquery.default)(e.currentTarget);
-  $li.addClass('selector').siblings().removeClass('selector');
-  $tabContent.children().eq($li.index()).addClass('active').siblings().removeClass('active');
-  localStorage.setItem(localStoKey, $li.index());
-});
-$tabBar.children().eq(index).trigger('click');
-},{"./app2.css":"app2.css","jquery":"../node_modules/jquery/dist/jquery.js"}],"app3.css":[function(require,module,exports) {
+//通信对象
+var eventBus = (0, _jquery.default)(window); //
+
+var localStoKey = 'tab'; //Model
+
+var model = new _Model.default({
+  data: {
+    index: parseInt(localStorage.getItem(localStoKey)) || 1
+  },
+  update: function update(index) {
+    Object.assign(model.data, index);
+    eventBus.trigger('m:updated');
+    localStorage.setItem(localStoKey, model.data.index);
+  }
+}); //View
+
+var view = {
+  el: null,
+  html: function html(index) {
+    return "\n  <div>\n  <ol class=\"tab-Bar\">\n    <li data-index='1' class=".concat(index !== 2 ? 'selector' : '', ">1</li>\n    <li data-index='2' class=").concat(index === 2 ? 'selector' : '', ">2</li>\n  </ol>\n  <ol class=\"tab-Content\">\n    <li class=").concat(index !== 2 ? 'active' : '', ">first</li>\n    <li class=").concat(index === 2 ? 'active' : '', ">second</li>\n  </ol>\n  </div>");
+  },
+  init: function init(container) {
+    view.el = (0, _jquery.default)(container);
+  },
+  render: function render(index) {
+    console.log(index);
+
+    if (view.el.children.length !== 0) {
+      view.el.empty();
+    }
+
+    (0, _jquery.default)(view.html(index)).appendTo((0, _jquery.default)(view.el));
+  }
+}; //control 控制
+
+var control = {
+  init: function init(container) {
+    view.init(container);
+    view.render(model.data.index);
+    control.autoBindEvents();
+    eventBus.on('m:updated', function () {
+      view.render(model.data.index);
+    });
+  },
+  events: {
+    'click.li': 'select'
+  },
+  select: function select(e) {
+    var index = parseInt(e.currentTarget.dataset.index);
+    model.update({
+      index: index
+    });
+  },
+  autoBindEvents: function autoBindEvents() {
+    var key, list;
+
+    for (key in control.events) {
+      list = key.split('.');
+      view.el.on(list[0], list[1], control[control.events[key]]);
+    }
+  }
+};
+var _default = control; // $tabBar
+//   .children()
+//   .eq(index)
+//   .trigger('click');
+
+exports.default = _default;
+},{"./app2.css":"app2.css","jquery":"../node_modules/jquery/dist/jquery.js","./base/Model":"base/Model.js"}],"app3.css":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
@@ -11174,7 +11316,7 @@ require("./global.css");
 
 var _app = _interopRequireDefault(require("./app1.js"));
 
-require("./app2.js");
+var _app2 = _interopRequireDefault(require("./app2.js"));
 
 require("./app3.js");
 
@@ -11184,6 +11326,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //初始化 渲染HTML
 _app.default.init('#app1');
+
+_app2.default.init('#app2');
 },{"./reset.css":"reset.css","./global.css":"global.css","./app1.js":"app1.js","./app2.js":"app2.js","./app3.js":"app3.js","./app4.js":"app4.js"}],"../../../../AppData/Local/Yarn/Data/global/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -11212,7 +11356,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "13050" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "8371" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

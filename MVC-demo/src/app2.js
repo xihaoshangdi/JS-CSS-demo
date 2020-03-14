@@ -1,41 +1,79 @@
 import './app2.css';
 import $ from 'jquery';
+import Model from './base/Model';
 
-const html = ` <section id="app2">
-<ol class="tab-Bar">
-  <li>1</li>
-  <li>2</li>
-</ol>
-<ol class="tab-Content">
-  <li>first</li>
-  <li>second</li>
-</ol>
-</section>`;
-
-const $element = $(html);
-
-$element.appendTo($('body > .container'));
-
-const $tabBar = $('#app2 .tab-Bar');
-const $tabContent = $('#app2 .tab-Content');
+//通信对象
+const eventBus = $(window);
+//
 const localStoKey = 'tab';
-let index = localStorage.getItem(localStoKey) || 0;
-
-$tabBar.on('click', 'li', e => {
-  const $li = $(e.currentTarget);
-  $li
-    .addClass('selector')
-    .siblings()
-    .removeClass('selector');
-  $tabContent
-    .children()
-    .eq($li.index())
-    .addClass('active')
-    .siblings()
-    .removeClass('active');
-  localStorage.setItem(localStoKey, $li.index());
+//Model
+const model = new Model({
+  data: {
+    index: parseInt(localStorage.getItem(localStoKey)) || 1
+  },
+  update: function(index) {
+    Object.assign(model.data, index);
+    eventBus.trigger('m:updated');
+    localStorage.setItem(localStoKey, model.data.index);
+  }
 });
-$tabBar
-  .children()
-  .eq(index)
-  .trigger('click');
+//View
+const view = {
+  el: null,
+  html(index) {
+    return `
+  <div>
+  <ol class="tab-Bar">
+    <li data-index='1' class=${index !== 2 ? 'selector' : ''}>1</li>
+    <li data-index='2' class=${index === 2 ? 'selector' : ''}>2</li>
+  </ol>
+  <ol class="tab-Content">
+    <li class=${index !== 2 ? 'active' : ''}>first</li>
+    <li class=${index === 2 ? 'active' : ''}>second</li>
+  </ol>
+  </div>`;
+  },
+  init(container) {
+    view.el = $(container);
+  },
+  render(index) {
+    console.log(index);
+    if (view.el.children.length !== 0) {
+      view.el.empty();
+    }
+    $(view.html(index)).appendTo($(view.el));
+  }
+};
+
+//control 控制
+const control = {
+  init(container) {
+    view.init(container);
+    view.render(model.data.index);
+    control.autoBindEvents();
+    eventBus.on('m:updated', () => {
+      view.render(model.data.index);
+    });
+  },
+  events: {
+    'click.li': 'select'
+  },
+  select(e) {
+    const index = parseInt(e.currentTarget.dataset.index);
+    model.update({ index: index });
+  },
+  autoBindEvents() {
+    let key, list;
+    for (key in control.events) {
+      list = key.split('.');
+      view.el.on(list[0], list[1], control[control.events[key]]);
+    }
+  }
+};
+
+export default control;
+
+// $tabBar
+//   .children()
+//   .eq(index)
+//   .trigger('click');
